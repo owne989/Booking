@@ -1,0 +1,1249 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Blades - حجز خدمة المساج</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            direction: rtl;
+            transition: all 0.3s ease;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #f0c040;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(240, 192, 64, 0.1), rgba(102, 126, 234, 0.1));
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #f0c040;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid transparent;
+            padding: 1.2rem 2.5rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f0c040, #e6b33a);
+            color: #000;
+            border-color: #f0c040;
+            box-shadow: 0 8px 25px rgba(240, 192, 64, 0.4);
+        }
+
+        .form-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
+            color: #f0c040;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #f0c040;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(240, 192, 64, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .captain-section {
+            margin: 3rem 0;
+        }
+
+        .captain-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #f0c040;
+            font-weight: bold;
+        }
+
+        .captain-display {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #f0c040;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(240, 192, 64, 0.3);
+        }
+
+        .therapists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .therapist-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .therapist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(240, 192, 64, 0.1), rgba(102, 126, 234, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .therapist-card:hover::before {
+            opacity: 1;
+        }
+
+        .therapist-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .therapist-card.selected {
+            border-color: #f0c040;
+            background: rgba(240, 192, 64, 0.2);
+            box-shadow: 0 15px 35px rgba(240, 192, 64, 0.4);
+        }
+
+        .therapist-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+
+        .therapist-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .therapist-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .therapist-card:hover img {
+            transform: scale(1.1);
+            border-color: #f0c040;
+        }
+
+        .therapist-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .therapist-rating {
+            color: #f0c040;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .holiday-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            z-index: 2;
+            animation: checkmarkPop 0.3s ease;
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .therapist-card.selected .checkmark {
+            display: flex;
+        }
+
+        .price-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(135deg, #f0c040, #e6b33a);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(240, 192, 64, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #f0c040, #e6b33a);
+            color: #000;
+            border: none;
+            padding: 1.5rem;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(240, 192, 64, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 3% auto;
+            padding: 3rem;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            color: white;
+            text-align: center;
+            animation: modalSlideIn 0.4s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-content img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 2rem;
+            border: 6px solid #f0c040;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content img:hover {
+            transform: scale(1.05);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #f0c040;
+            transform: scale(1.1);
+        }
+
+        .modal-captain-info {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .modal-select-btn {
+            background: linear-gradient(135deg, #f0c040, #e6b33a);
+            color: #000;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 192, 64, 0.4);
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .image-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            animation: imageZoomIn 0.3s ease;
+        }
+
+        @keyframes imageZoomIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .image-modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .image-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1101;
+            transition: all 0.3s ease;
+        }
+
+        .image-close:hover {
+            color: #f0c040;
+            transform: scale(1.1);
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #f0c040;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            margin-top: 2rem;
+            font-size: 1.4rem;
+            color: white;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* English styles */
+        body.english {
+            direction: ltr;
+        }
+
+        body.english .language-toggle {
+            left: auto;
+            right: 20px;
+        }
+
+        body.english .close-btn {
+            left: auto;
+            right: 25px;
+        }
+
+        body.english .image-close {
+            left: 30px;
+            right: auto;
+        }
+
+        body.english .holiday-badge {
+            left: 10px;
+            right: auto;
+        }
+
+        body.english .checkmark {
+            right: 10px;
+            left: auto;
+        }
+
+        
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            .form-section {
+                padding: 2rem;
+            }
+
+            .therapists-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tab-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 2rem;
+                margin: 10% auto;
+            }
+
+            .modal-content img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .therapist-card img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Language Toggle -->
+    <button class="language-toggle" onclick="toggleLanguage()" data-ar="English" data-en="العربية">English</button>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text" data-ar="جاري تأكيد الحجز..." data-en="Confirming your booking...">جاري تأكيد الحجز...</div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 data-ar="Royal Blades" data-en="Royal Blades">Royal Blades</h1>
+        <p data-ar="احجز خدمة المساج الآن واستمتع بتجربة استثنائية" data-en="Book your massage service now and enjoy an exceptional experience">احجز خدمة المساج الآن واستمتع بتجربة استثنائية</p>
+    </div>
+
+    <div class="container">
+        <!-- Tab Buttons -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showSection('salon')" data-ar="خدمة الصالون" data-en="Salon Service">خدمة الصالون</button>
+            <button class="tab-btn" onclick="showSection('home')" data-ar="الخدمة المنزلية" data-en="Home Service">الخدمة المنزلية</button>
+        </div>
+
+        <!-- Salon Section -->
+        <div id="salonSection" class="form-section active">
+            <h2 class="form-title" data-ar="حجز مساج الصالون" data-en="Salon Massage Booking">حجز مساج الصالون</h2>
+            <form onsubmit="submitForm(event, 'salon')">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="text" id="salonName" data-placeholder-ar="اسمك الكامل" data-placeholder-en="Your Full Name" placeholder="اسمك الكامل" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="salonPhone" data-placeholder-ar="+971 رقم الهاتف مع رمز الدولة" data-placeholder-en="+971 Phone Number with Country Code" placeholder="+971 رقم الهاتف مع رمز الدولة" inputmode="numeric" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="datetime-local" id="salonDateTime" required>
+                    </div>
+                    <div class="input-group">
+                        <select id="salonDuration" required>
+                            <option value="" data-ar="اختر المدة" data-en="Choose Duration">اختر المدة</option>
+                            <option value="60 minutes - 225 AED" data-ar="60 دقيقة - 225 درهم" data-en="60 minutes - 225 AED">60 دقيقة - 225 درهم</option>
+                            <option value="90 minutes - 300 AED" data-ar="90 دقيقة - 300 درهم" data-en="90 minutes - 300 AED">90 دقيقة - 300 درهم</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="captain-section">
+                    <h3 class="captain-title" data-ar="اختر الكابتن المفضل لديك" data-en="Choose Your Preferred Captain">اختر الكابتن المفضل لديك</h3>
+                    <div class="captain-display" id="salonCaptainDisplay" data-ar="لم يتم اختيار كابتن بعد" data-en="No captain selected yet">لم يتم اختيار كابتن بعد</div>
+                    <div class="therapists-grid" id="salonTherapists"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" data-ar="تأكيد حجز الصالون" data-en="Confirm Salon Booking">تأكيد حجز الصالون</button>
+            </form>
+        </div>
+
+        <!-- Home Section -->
+        <div id="homeSection" class="form-section">
+            <h2 class="form-title" data-ar="حجز الخدمة المنزلية" data-en="Home Service Booking">حجز الخدمة المنزلية</h2>
+            <form onsubmit="submitForm(event, 'home')">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="text" id="homeName" data-placeholder-ar="اسمك الكامل" data-placeholder-en="Your Full Name" placeholder="اسمك الكامل" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="homePhone" data-placeholder-ar="+971 رقم الهاتف مع رمز الدولة" data-placeholder-en="+971 Phone Number with Country Code" placeholder="+971 رقم الهاتف مع رمز الدولة" inputmode="numeric" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="homeAddress" data-placeholder-ar="العنوان بالتفصيل" data-placeholder-en="Detailed Address" placeholder="العنوان بالتفصيل" required>
+                    </div>
+                    <div class="input-group">
+                        <select id="emirate" required onchange="updateHomePrice()">
+                            <option value="" data-ar="اختر الإمارة" data-en="Choose Emirate">اختر الإمارة</option>
+                            <option value="Abu Dhabi" data-ar="أبوظبي" data-en="Abu Dhabi">أبوظبي</option>
+                            <option value="Dubai" data-ar="دبي" data-en="Dubai">دبي</option>
+                            <option value="Sharjah" data-ar="الشارقة" data-en="Sharjah">الشارقة</option>
+                            <option value="Ajman" data-ar="عجمان" data-en="Ajman">عجمان</option>
+                            <option value="Umm Al Quwain" data-ar="أم القيوين" data-en="Umm Al Quwain">أم القيوين</option>
+                            <option value="Ras Al Khaimah" data-ar="رأس الخيمة" data-en="Ras Al Khaimah">رأس الخيمة</option>
+                            <option value="Fujairah" data-ar="الفجيرة" data-en="Fujairah">الفجيرة</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="datetime-local" id="homeDateTime" required>
+                    </div>
+                </div>
+
+                <div class="price-display" id="homePriceDisplay" data-ar="اختر الإمارة لعرض السعر" data-en="Choose Emirate to display price">اختر الإمارة لعرض السعر</div>
+
+                <div class="captain-section">
+                    <h3 class="captain-title" data-ar="اختر الكابتن المفضل لديك" data-en="Choose Your Preferred Captain">اختر الكابتن المفضل لديك</h3>
+                    <div class="captain-display" id="homeCaptainDisplay" data-ar="لم يتم اختيار كابتن بعد" data-en="No captain selected yet">لم يتم اختيار كابتن بعد</div>
+                    <div class="therapists-grid" id="homeTherapists"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" data-ar="تأكيد الحجز المنزلي" data-en="Confirm Home Booking">تأكيد الحجز المنزلي</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Captain Details Modal -->
+    <div id="captainModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img id="modalImage" src="" alt="Captain" onclick="openImageModal()">
+            <h2 id="modalName"></h2>
+            <div class="modal-captain-info" id="modalInfo"></div>
+            <button class="modal-select-btn" onclick="selectCaptain()" data-ar="اختيار الكابتن" data-en="Select Captain">اختيار الكابتن</button>
+        </div>
+    </div>
+
+    <!-- Full Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="image-close" onclick="closeImageModal()">&times;</span>
+        <div class="image-modal-content">
+            <img id="fullImage" src="" alt="Captain Full Image">
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'en';
+
+        // البيانات والمتغيرات
+        const prices = {
+            ar: {
+                "Abu Dhabi": "800 درهم",
+                "Dubai": "500 درهم", 
+                "Sharjah": "350 درهم",
+                "Ajman": "400 درهم",
+                "Umm Al Quwain": "400 درهم",
+                "Ras Al Khaimah": "600 درهم",
+                "Fujairah": "600 درهم"
+            },
+            en: {
+                "Abu Dhabi": "800 AED",
+                "Dubai": "500 AED", 
+                "Sharjah": "350 AED",
+                "Ajman": "400 AED",
+                "Umm Al Quwain": "400 AED",
+                "Ras Al Khaimah": "600 AED",
+                "Fujairah": "600 AED"
+            }
+        };
+
+        const captains = [
+            { 
+                name: "الكابتن أحمد", 
+                nameEn: "Captain Ahmed",
+                img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 5, 
+                age: 26, 
+                nationality: "مصر🇪🇬", 
+                nationalityEn: "Egypt🇪🇬",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن محمود", 
+                nameEn: "Captain Mahmoud",
+                img: "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 5, 
+                age: 20, 
+                nationality: "سوريا🇸🇾", 
+                nationalityEn: "Syria🇸🇾",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن يوسف", 
+                nameEn: "Captain Youssef",
+                img: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 5, 
+                age: 27, 
+                nationality: "مصر🇪🇬", 
+                nationalityEn: "Egypt🇪🇬",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن سامي", 
+                nameEn: "Captain Sami",
+                img: "https://images.unsplash.com/photo-1584999734482-0361aecad844?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 4, 
+                age: 23, 
+                nationality: "سوريا🇸🇾", 
+                nationalityEn: "Syria🇸🇾",
+                location: "عجمان",
+                locationEn: "Ajman"
+            },
+            { 
+                name: "الكابتن علي", 
+                nameEn: "Captain Ali",
+                img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 4, 
+                age: 24, 
+                nationality: "سوريا🇸🇾", 
+                nationalityEn: "Syria🇸🇾",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن بركات", 
+                nameEn: "Captain Barakat",
+                img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 1, 
+                holiday: true, 
+                age: 20, 
+                nationality: "مصر🇪🇬", 
+                nationalityEn: "Egypt🇪🇬",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن رامي", 
+                nameEn: "Captain Rami",
+                img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 4, 
+                age: 27, 
+                nationality: "الأردن🇯🇴", 
+                nationalityEn: "Jordan🇯🇴",
+                location: "دبي",
+                locationEn: "Dubai"
+            },
+            { 
+                name: "الكابتن غيث", 
+                nameEn: "Captain Ghaith",
+                img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 5, 
+                age: 23, 
+                nationality: "مصر🇪🇬", 
+                nationalityEn: "Egypt🇪🇬",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن وليد", 
+                nameEn: "Captain Waleed",
+                img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 5, 
+                age: 22, 
+                nationality: "مصر🇪🇬", 
+                nationalityEn: "Egypt🇪🇬",
+                location: "الشارقة",
+                locationEn: "Sharjah"
+            },
+            { 
+                name: "الكابتن أيهم", 
+                nameEn: "Captain Ayham",
+                img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
+                rating: 4, 
+                age: 21, 
+                nationality: "سوريا🇸🇾", 
+                nationalityEn: "Syria🇸🇾",
+                location: "عجمان",
+                locationEn: "Ajman"
+            }
+        ];
+
+        let selectedCaptain = {
+            salon: null,
+            home: null
+        };
+
+        let currentModalType = '';
+        let currentModalCaptain = null;
+
+        // Language toggle function
+        function toggleLanguage() {
+            const body = document.body;
+            const toggleBtn = document.querySelector('.language-toggle');
+            
+            if (currentLanguage === 'ar') {
+                currentLanguage = 'en';
+                body.classList.add('english');
+                body.setAttribute('dir', 'ltr');
+                body.setAttribute('lang', 'en');
+            } else {
+                currentLanguage = 'ar';
+                body.classList.remove('english');
+                body.setAttribute('dir', 'rtl');
+                body.setAttribute('lang', 'ar');
+            }
+            
+            updateAllTexts();
+            renderCaptains('salon');
+            renderCaptains('home');
+            updateHomePrice();
+        }
+
+        function updateAllTexts() {
+            const elements = document.querySelectorAll('[data-ar][data-en]');
+            elements.forEach(element => {
+                const text = element.getAttribute(`data-${currentLanguage}`);
+                if (text) {
+                    element.textContent = text;
+                }
+            });
+
+            // Update placeholders
+            const inputs = document.querySelectorAll('input[data-placeholder-ar][data-placeholder-en]');
+            inputs.forEach(input => {
+                const placeholder = input.getAttribute(`data-placeholder-${currentLanguage}`);
+                if (placeholder) {
+                    input.placeholder = placeholder;
+                }
+            });
+
+            // Update select options
+            const selects = document.querySelectorAll('select option[data-ar][data-en]');
+            selects.forEach(option => {
+                const text = option.getAttribute(`data-${currentLanguage}`);
+                if (text) {
+                    option.textContent = text;
+                }
+            });
+        }
+
+        // الوظائف الأساسية
+        function showSection(type) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // إزالة الفئة النشطة من جميع الأزرار
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // إظهار القسم المطلوب
+            document.getElementById(type + 'Section').classList.add('active');
+            event.target.classList.add('active');
+
+            // تحديث عرض الكابتن
+            renderCaptains(type);
+        }
+
+        function renderCaptains(type) {
+            const container = document.getElementById(type + 'Therapists');
+            container.innerHTML = '';
+
+            captains.forEach(captain => {
+                const card = document.createElement('div');
+                card.className = 'therapist-card';
+                if (captain.holiday) card.classList.add('disabled');
+
+                const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
+                const holidayText = currentLanguage === 'ar' ? 'إجازة' : 'Holiday';
+
+                card.innerHTML = `
+                    ${captain.holiday ? `<div class="holiday-badge">${holidayText}</div>` : ''}
+                    <div class="checkmark">✓</div>
+                    <img src="${captain.img}" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
+                    <div class="therapist-name">${displayName}</div>
+                    <div class="therapist-rating">${'★'.repeat(captain.rating)}${'☆'.repeat(5 - captain.rating)}</div>
+                `;
+
+                if (!captain.holiday) {
+                    card.onclick = () => openModal(captain, type);
+                }
+
+                container.appendChild(card);
+            });
+        }
+
+        function openModal(captain, type) {
+            currentModalType = type;
+            currentModalCaptain = captain;
+
+            const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
+            const nationality = currentLanguage === 'ar' ? captain.nationality : captain.nationalityEn;
+            const location = currentLanguage === 'ar' ? captain.location : captain.locationEn;
+            
+            const ageText = currentLanguage === 'ar' ? 'العمر' : 'Age';
+            const nationalityText = currentLanguage === 'ar' ? 'الجنسية' : 'Nationality';
+            const locationText = currentLanguage === 'ar' ? 'مكان السكن' : 'Location';
+
+            document.getElementById('modalImage').src = captain.img;
+            document.getElementById('fullImage').src = captain.img;
+            document.getElementById('modalName').textContent = displayName;
+            document.getElementById('modalInfo').innerHTML = 
+                `<strong>${ageText}:</strong> ${captain.age} ${currentLanguage === 'ar' ? 'سنة' : 'years old'}<br>
+                 <strong>${nationalityText}:</strong> ${nationality}<br>
+                 <strong>${locationText}:</strong> ${location}`;
+
+            document.getElementById('captainModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('captainModal').style.display = 'none';
+        }
+
+        function openImageModal() {
+            document.getElementById('imageModal').style.display = 'block';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        function selectCaptain() {
+            if (currentModalCaptain && currentModalType) {
+                selectedCaptain[currentModalType] = currentModalCaptain;
+                
+                const displayName = currentLanguage === 'ar' ? currentModalCaptain.name : currentModalCaptain.nameEn;
+                const selectedText = currentLanguage === 'ar' ? 'تم اختيار' : 'Selected';
+                
+                // تحديث العرض
+                document.getElementById(currentModalType + 'CaptainDisplay').textContent = 
+                    `${selectedText}: ${displayName}`;
+
+                // تحديث الواجهة
+                const cards = document.querySelectorAll(`#${currentModalType}Therapists .therapist-card`);
+                cards.forEach(card => card.classList.remove('selected'));
+                
+                const selectedCard = Array.from(cards).find(card => {
+                    const img = card.querySelector('img');
+                    return img && img.alt === displayName;
+                });
+                
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                }
+
+                closeModal();
+            }
+        }
+
+        function updateHomePrice() {
+            const emirate = document.getElementById('emirate').value;
+            const priceDisplay = document.getElementById('homePriceDisplay');
+            
+            if (emirate && prices[currentLanguage][emirate]) {
+                const priceText = currentLanguage === 'ar' ? 'السعر' : 'Price';
+                const durationText = currentLanguage === 'ar' ? '90 دقيقة' : '90 minutes';
+                priceDisplay.textContent = `${priceText}: ${prices[currentLanguage][emirate]} (${durationText})`;
+            } else {
+                const defaultText = currentLanguage === 'ar' ? 'اختر الإمارة لعرض السعر' : 'Choose Emirate to display price';
+                priceDisplay.textContent = defaultText;
+            }
+        }
+
+        function submitForm(event, type) {
+            event.preventDefault();
+
+            // التحقق من اختيار الكابتن
+            if (!selectedCaptain[type]) {
+                const alertText = currentLanguage === 'ar' ? 'يرجى اختيار الكابتن أولاً' : 'Please select a captain first';
+                alert(alertText);
+                return;
+            }
+
+            // إظهار شاشة التحميل
+            document.getElementById('loader').style.display = 'flex';
+
+            // جمع البيانات
+            let formData = {};
+            let message = '';
+            let captainName = currentLanguage === 'ar' ? selectedCaptain[type].name : selectedCaptain[type].nameEn;
+
+            if (type === 'salon') {
+                formData = {
+                    name: document.getElementById('salonName').value,
+                    phone: document.getElementById('salonPhone').value,
+                    dateTime: document.getElementById('salonDateTime').value,
+                    duration: document.getElementById('salonDuration').value,
+                    captain: captainName,
+                    type: 'salon'
+                };
+
+                message = `🏪 حجز جديد - خدمة الصالون\n\n👤 الاسم: ${formData.name}\n📞 الهاتف: ${formData.phone}\n📅 التاريخ والوقت: ${formData.dateTime}\n⏱️ المدة: ${formData.duration}\n🧑‍⚕️ الكابتن: ${formData.captain}`;
+            } else {
+                const emirateValue = document.getElementById('emirate').value;
+                const priceText = emirateValue ? prices['ar'][emirateValue] : 'غير محدد';
+                
+                formData = {
+                    name: document.getElementById('homeName').value,
+                    phone: document.getElementById('homePhone').value,
+                    address: document.getElementById('homeAddress').value,
+                    emirate: emirateValue,
+                    dateTime: document.getElementById('homeDateTime').value,
+                    captain: captainName,
+                    price: priceText,
+                    type: 'home'
+                };
+
+                message = `🏠 حجز جديد - الخدمة المنزلية\n\n👤 الاسم: ${formData.name}\n📞 الهاتف: ${formData.phone}\n📍 العنوان: ${formData.address}\n🏙️ الإمارة: ${formData.emirate}\n📅 التاريخ والوقت: ${formData.dateTime}\n🧑‍⚕️ الكابتن: ${formData.captain}\n💰 السعر: ${formData.price}`;
+            }
+
+            // إرسال البيانات إلى تليجرام
+            const telegramAPI = 'https://api.telegram.org/bot7621980874:AAEj35gAds4DYCZE3SCMdg84uCjrZOuJdL8/sendMessage';
+            
+            fetch(telegramAPI, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: '7997140142',
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('تم إرسال البيانات بنجاح:', data);
+                
+                // إعادة التوجيه لصفحة التأكيد
+                setTimeout(() => {
+                    const params = new URLSearchParams({
+                        captain: captainName,
+                        captainImage: selectedCaptain[type].img,
+                        phone: formData.phone,
+                        type: formData.type,
+                        datetime: formData.dateTime,
+                        duration: formData.duration || '',
+                        address: formData.address || '',
+                        emirate: formData.emirate || '',
+                        price: formData.price || formData.duration || 'غير محدد'
+                    });
+                    
+                    window.location.href = `./Payments-spa.html?${params.toString()}`;
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('خطأ في إرسال البيانات:', error);
+                const errorText = currentLanguage === 'ar' ? 
+                    'حدث خطأ في إرسال البيانات. يرجى المحاولة مرة أخرى.' : 
+                    'An error occurred while sending data. Please try again.';
+                alert(errorText);
+            })
+            .finally(() => {
+                document.getElementById('loader').style.display = 'none';
+            });
+        }
+
+        // تحميل البيانات عند تحميل الصفحة
+        window.addEventListener('load', () => {
+            // Set English as default
+            document.body.classList.add('english');
+            document.body.setAttribute('dir', 'ltr');
+            document.body.setAttribute('lang', 'en');
+            document.querySelector('.language-toggle').textContent = 'العربية';
+            
+            renderCaptains('salon');
+            renderCaptains('home');
+            updateAllTexts();
+        });
+
+        // إغلاق المودال عند النقر خارجه
+        window.onclick = function(event) {
+            const modal = document.getElementById('captainModal');
+            const imageModal = document.getElementById('imageModal');
+            
+            if (event.target === modal) {
+                closeModal();
+            }
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+        }
+    </script>
+</body>
+
+</html>
