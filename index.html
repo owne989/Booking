@@ -910,7 +910,7 @@
                 nameEn: "Captain Waten",
                 img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752279265/FB_IMG_1752277025359_idr9s4.jpg", 
                 rating: 4, 
-                busy: true,
+                reserved: true,
                 age: 23, 
                 nationality: "سوريا🇸🇾", 
                 nationalityEn: "syria🇸🇾",
@@ -1030,17 +1030,17 @@
                 if (captain.holiday) card.classList.add('disabled');
 
                 const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
-                const holidayText = currentLanguage === 'ar' ? 'إجازة' : 'Holiday';
+                const holidayText = currentLanguage === 'ar' ? 'محجوز' : 'reserved';
 
-                card.innerHTML = `
-                    ${captain.holiday ? `<div class="holiday-badge">${holidayText}</div>` : ''}
+                card.innerHTML =
+                    ${captain.reserved ? `<div class="reserved-badge">${reservedText}</div>` : ''}
                     <div class="checkmark">✓</div>
                     <img src="${captain.img}" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
                     <div class="therapist-name">${displayName}</div>
                     <div class="therapist-rating">${'★'.repeat(captain.rating)}${'☆'.repeat(5 - captain.rating)}</div>
                 `;
 
-                if (!captain.holiday) {
+                if (!captain.reserved) {
                     card.onclick = () => openModal(captain, type);
                 }
 
