@@ -328,7 +328,7 @@
             z-index: 1;
         }
 
-        .reserved-badge {
+        .holiday-badge {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -619,7 +619,7 @@
             right: auto;
         }
 
-        body.english .reserved-badge {
+        body.english .holiday-badge {
             left: 10px;
             right: auto;
         }
@@ -932,7 +932,7 @@
                 nameEn: "Captain khalid",
                 img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752279669/IMG-20250614-WA0070_nlmu8k.jpg", 
                 rating: 1, 
-                reserved: true,
+                holiday: true,
                 age: 25, 
                 nationality: "سوريا🇸🇾", 
                 nationalityEn: "Syria🇸🇾",
@@ -1027,20 +1027,20 @@
             captains.forEach(captain => {
                 const card = document.createElement('div');
                 card.className = 'therapist-card';
-                if (captain.reserved) card.classList.add('disabled');
+                if (captain.holiday) card.classList.add('disabled');
 
                 const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
-                const reservedText = currentLanguage === 'ar' ? 'محجوز' : ''reserved;
+                const holidayText = currentLanguage === 'ar' ? 'إجازة' : 'Holiday';
 
                 card.innerHTML = `
-                    ${captain.reserved ? `<div class="reserved-badge">${reservedText}</div>` : ''}
+                    ${captain.holiday ? `<div class="holiday-badge">${holidayText}</div>` : ''}
                     <div class="checkmark">✓</div>
                     <img src="${captain.img}" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
                     <div class="therapist-name">${displayName}</div>
                     <div class="therapist-rating">${'★'.repeat(captain.rating)}${'☆'.repeat(5 - captain.rating)}</div>
                 `;
 
-                if (!captain.reserved) {
+                if (!captain.holiday) {
                     card.onclick = () => openModal(captain, type);
                 }
 
