@@ -328,7 +328,7 @@
             z-index: 1;
         }
 
-        .reserved-badge {
+        .holiday-badge {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -619,7 +619,7 @@
             right: auto;
         }
 
-        body.english .reserved-badge {
+        body.english .holiday-badge {
             left: 10px;
             right: auto;
         }
@@ -723,8 +723,8 @@
                     <div class="input-group">
                         <select id="salonDuration" required>
                             <option value="" data-ar="اختر المدة" data-en="Choose Duration">اختر المدة</option>
-                            <option value="60 minutes - 199 AED" data-ar="60 دقيقة - 199 درهم" data-en="60 minutes - 199 AED">60 دقيقة - 199 درهم</option>
-                            <option value="90 minutes - 249 AED" data-ar="90 دقيقة - 249 درهم" data-en="90 minutes - 249 AED">90 دقيقة - 249 درهم</option>
+                            <option value="60 minutes - 225 AED" data-ar="60 دقيقة - 225 درهم" data-en="60 minutes - 225 AED">60 دقيقة - 225 درهم</option>
+                            <option value="90 minutes - 300 AED" data-ar="90 دقيقة - 300 درهم" data-en="90 minutes - 300 AED">90 دقيقة - 300 درهم</option>
                         </select>
                     </div>
                 </div>
@@ -808,22 +808,22 @@
         // البيانات والمتغيرات
         const prices = {
             ar: {
-                "Abu Dhabi": "699 درهم",
-                "Dubai": "499 درهم", 
-                "Sharjah": "349 درهم",
-                "Ajman": "399 درهم",
-                "Umm Al Quwain": "399 درهم",
-                "Ras Al Khaimah": "599 درهم",
-                "Fujairah": "599 درهم"
+                "Abu Dhabi": "800 درهم",
+                "Dubai": "500 درهم", 
+                "Sharjah": "350 درهم",
+                "Ajman": "400 درهم",
+                "Umm Al Quwain": "400 درهم",
+                "Ras Al Khaimah": "600 درهم",
+                "Fujairah": "600 درهم"
             },
             en: {
-                "Abu Dhabi": "699 AED",
-                "Dubai": "499 AED", 
-                "Sharjah": "349 AED",
-                "Ajman": "399 AED",
-                "Umm Al Quwain": "399 AED",
-                "Ras Al Khaimah": "599 AED",
-                "Fujairah": "599 AED"
+                "Abu Dhabi": "800 AED",
+                "Dubai": "500 AED", 
+                "Sharjah": "350 AED",
+                "Ajman": "400 AED",
+                "Umm Al Quwain": "400 AED",
+                "Ras Al Khaimah": "600 AED",
+                "Fujairah": "600 AED"
             }
         };
 
@@ -864,13 +864,13 @@
             { 
                 name: "الكابتن مؤيد", 
                 nameEn: "Captain Moaayd",
-                img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752279669/IMG-20250406-WA0056_bkrdx9.jpg", 
+                img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752252945/IMG-20250710-WA0008_zj44l5.jpg", 
                 rating: 5, 
-                age: 20, 
+                age: 23, 
                 nationality: "سوريا🇸🇾", 
                 nationalityEn: "Syria🇸🇾",
-                location: "الشارقة",
-                locationEn: "Sharjah"
+                location: "عجمان",
+                locationEn: "Ajman"
             },
             { 
                 name: "الكابتن يزن", 
@@ -902,15 +902,14 @@
                 age: 27, 
                 nationality: "الأردن🇯🇴", 
                 nationalityEn: "Jordan🇯🇴",
-                location: "الشارقة",
-                locationEn: "Sharjah"
+                location: "دبي",
+                locationEn: "Dubai"
             },
             { 
                 name: "الكابتن وتين", 
                 nameEn: "Captain Waten",
                 img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752279265/FB_IMG_1752277025359_idr9s4.jpg", 
-                rating: 4, 
-                reserved:true,
+                rating: 3, 
                 age: 23, 
                 nationality: "سوريا🇸🇾", 
                 nationalityEn: "syria🇸🇾",
@@ -932,7 +931,8 @@
                 name: "الكابتن خالد", 
                 nameEn: "Captain khalid",
                 img: "https://res.cloudinary.com/dree7qwtx/image/upload/v1752279669/IMG-20250614-WA0070_nlmu8k.jpg", 
-                rating: 3, 
+                rating: 1, 
+                holiday: true,
                 age: 25, 
                 nationality: "سوريا🇸🇾", 
                 nationalityEn: "Syria🇸🇾",
@@ -1027,20 +1027,20 @@
             captains.forEach(captain => {
                 const card = document.createElement('div');
                 card.className = 'therapist-card';
-                if (captain.reserved) card.classList.add('disabled');
+                if (captain.holiday) card.classList.add('disabled');
 
                 const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
-                const reservedText = currentLanguage === 'ar' ? 'محجوز' : 'reserved';
+                const holidayText = currentLanguage === 'ar' ? 'إجازة' : 'Holiday';
 
-                card.innerHTML =
-                    ${captain.reserved ? `<div class="reserved-badge">${reservedText}</div>` : ''}
+                card.innerHTML = `
+                    ${captain.holiday ? `<div class="holiday-badge">${holidayText}</div>` : ''}
                     <div class="checkmark">✓</div>
                     <img src="${captain.img}" alt="${displayName}" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
                     <div class="therapist-name">${displayName}</div>
                     <div class="therapist-rating">${'★'.repeat(captain.rating)}${'☆'.repeat(5 - captain.rating)}</div>
                 `;
 
-                if (!captain.reserved) {
+                if (!captain.holiday) {
                     card.onclick = () => openModal(captain, type);
                 }
 
