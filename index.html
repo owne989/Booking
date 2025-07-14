@@ -1030,7 +1030,7 @@
                 if (captain.reserved) card.classList.add('disabled');
 
                 const displayName = currentLanguage === 'ar' ? captain.name : captain.nameEn;
-                const holidayText = currentLanguage === 'ar' ? 'محجوز' : ''reserved;
+                const reservedText = currentLanguage === 'ar' ? 'محجوز' : ''reserved;
 
                 card.innerHTML = `
                     ${captain.reserved ? `<div class="reserved-badge">${reservedText}</div>` : ''}
