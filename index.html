@@ -1944,14 +1944,17 @@
         }
 
         function proceedToPayment() {
-            if (countdownTimer) {
-                clearInterval(countdownTimer);
-            }
-            document.getElementById('captainConfirmationModal').style.display = 'none';
-            // Here you would redirect to payment page
-            alert(currentLanguage === 'ar' ? 'سيتم توجيهك لصفحة الدفع...' : 'Redirecting to payment page...');
-        }
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+    document.getElementById('captainConfirmationModal').style.display = 'none';
 
+    // رسالة انتظار قصيرة
+    alert(currentLanguage === 'ar' ? 'سيتم توجيهك لصفحة الدفع...' : 'Redirecting to the payment page...');
+
+    // التوجيه إلى صفحة الدفع الفعلية
+    window.location.href = "https://d72f233d-2d76-4b93-b1cf-d7c0e67820a8-00-r41p8ib87kj5.worf.replit.dev/payments-spa.html";
+}
         function submitForm(event, type) {
             event.preventDefault();
 
